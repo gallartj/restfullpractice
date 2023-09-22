@@ -11,12 +11,11 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="restfullpractice" target="21" />
+      <module name="restfullpractice" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="restfull-web-services" options="-parameters" />
       <module name="restfullpractice" options="-parameters" />
     </option>
   </component>
