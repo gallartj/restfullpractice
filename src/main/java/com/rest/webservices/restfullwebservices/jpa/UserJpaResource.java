@@ -1,5 +1,6 @@
 package com.rest.webservices.restfullwebservices.jpa;
 
+import com.rest.webservices.restfullwebservices.User.Post;
 import com.rest.webservices.restfullwebservices.User.User;
 import com.rest.webservices.restfullwebservices.User.UserDaoService;
 import com.rest.webservices.restfullwebservices.User.UserNotFoundException;
@@ -24,6 +25,8 @@ public class UserJpaResource {
     UserDaoService service;
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private PostRepository postRepository;
 
 
     @GetMapping(path = "jpa/users")
@@ -69,6 +72,32 @@ public class UserJpaResource {
     public void deleteUser(@PathVariable int id) {
         repository.deleteById(id);
     }
+
+    @GetMapping("jpa/users/{id}/posts")
+    public List<Post> retrievePostForUser(@PathVariable int id) {
+        Optional<User> user = repository.findById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id"+id);
+        }
+       return user.get().getPosts();
+    }
+
+    @PostMapping("jpa/users/{id}/posts")
+    public ResponseEntity<Object> createPostForUser(@PathVariable int id, @Valid @RequestBody Post post) {
+        Optional<User> user = repository.findById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id"+id);
+        }
+        Post savedPost = postRepository.save(post);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPost.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+
+    }
+
 }
 
 

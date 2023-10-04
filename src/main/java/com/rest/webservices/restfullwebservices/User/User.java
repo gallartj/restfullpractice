@@ -7,9 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +16,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue
@@ -28,7 +28,7 @@ public class User {
     @Past
     //@JsonProperty("birt_date")
     private LocalDate birtDate;
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 }
